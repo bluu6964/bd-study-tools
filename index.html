@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="BD Study Tools — SSC/HSC GPA ক্যালকুলেটর, বিশ্ববিদ্যালয় CGPA ক্যালকুলেটর, BCS ও সরকারি চাকরির বয়স যাচাই, ফোকাস টাইমার — বাংলাদেশের শিক্ষার্থীদের জন্য ফ্রি টুল।" />
+<link rel="icon" href="data:," />
+<title>BD Study Tools — GPA, CGPA ও চাকরির বয়স ক্যালকুলেটর</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f4f6f2;
+    --surface:#ffffff;
+    --surface-2:#edf2ec;
+    --ink:#16211a;
+    --ink-soft:#48564d;
+    --line:#d7ded4;
+    --green:#0b6b3a;
+    --green-deep:#074d29;
+    --green-soft:#e2efe4;
+    --red:#c8102e;
+    --amber:#b97d0a;
+    --amber-soft:#fdf3dd;
+    --ok:#0b6b3a;
+    --ok-bg:#e2efe4;
+    --bad:#b4232a;
+    --bad-bg:#fdecec;
+    --shadow:0 1px 2px rgba(16,40,24,.06),0 10px 30px -18px rgba(16,40,24,.25);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d130f;
+      --surface:#151d17;
+      --surface-2:#1b261e;
+      --ink:#e7efe8;
+      --ink-soft:#a7b8ab;
+      --line:#2b3a2f;
+      --green:#43b273;
+      --green-deep:#8fd3a9;
+      --green-soft:#1d3125;
+      --red:#ff6b7a;
+      --amber:#e5b54a;
+      --amber-soft:#33290f;
+      --ok:#6fd598;
+      --ok-bg:#1d3125;
+      --bad:#ff8f96;
+      --bad-bg:#3a1d20;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.6);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16.5px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Tiro Bangla","Hind Siliguri",serif;font-weight:400;line-height:1.3;margin:0}
+  a{color:var(--green)}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 18px}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{display:flex;align-items:center;gap:16px;padding:11px 0}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex-shrink:0}
+  .brand-mark{
+    width:36px;height:36px;border-radius:9px;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-family:"Tiro Bangla",serif;font-size:19px;line-height:1;
+  }
+  .brand b{font-size:18px;font-weight:700;letter-spacing:.2px}
+  .brand small{display:block;font-size:11.5px;color:var(--ink-soft);line-height:1.2;font-weight:500}
+  nav.main{margin-left:auto;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  nav.main::-webkit-scrollbar{display:none}
+  nav.main a{
+    color:var(--ink-soft);text-decoration:none;font-size:14.5px;font-weight:600;
+    padding:7px 11px;border-radius:8px;white-space:nowrap;
+  }
+  nav.main a:hover{color:var(--green);background:var(--green-soft)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:44px 0 8px}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:start}
+  .flag-chip{
+    display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;
+    color:var(--green-deep);background:var(--green-soft);border:1px solid var(--line);
+    padding:5px 12px;border-radius:999px;margin-bottom:16px;
+  }
+  .flag-dot{width:11px;height:11px;border-radius:50%;background:var(--red);flex-shrink:0}
+  .hero h1{font-size:clamp(30px,5.4vw,46px);letter-spacing:-.2px}
+  .hero h1 .u{color:var(--green);font-style:italic}
+  .hero p.lead{color:var(--ink-soft);font-size:18px;margin:14px 0 22px;max-width:34em}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;cursor:pointer;
+    font-family:inherit;font-size:15.5px;font-weight:600;border-radius:10px;
+    padding:11px 18px;border:1px solid transparent;transition:transform .12s ease,background .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--green);color:#fff}
+  .btn-primary:hover{background:var(--green-deep);color:#fff}
+  @media (prefers-color-scheme: dark){ .btn-primary{color:#0d130f} .btn-primary:hover{color:#0d130f} }
+  .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green)}
+  .btn-sm{padding:8px 13px;font-size:14px;border-radius:8px}
+  .hero-side{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px 22px;
+  }
+  .hero-side h3{font-size:19px;margin-bottom:10px}
+  .hero-side ul{margin:0;padding:0;list-style:none}
+  .hero-side li{padding:9px 0;border-top:1px dashed var(--line);font-size:15px;display:flex;gap:10px}
+  .hero-side li:first-of-type{border-top:none}
+  .hero-side li b{color:var(--green);font-weight:700;flex-shrink:0}
+  .hero-side li span{color:var(--ink-soft)}
+  .hero-side li span b{color:var(--ink)}
+
+  /* ---------- ad slot ---------- */
+  .ad-slot{
+    margin:26px 0 6px;border:1.5px dashed var(--line);border-radius:var(--radius);
+    background:var(--surface-2);color:var(--ink-soft);
+    min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    text-align:center;padding:14px;
+  }
+  .ad-slot .ad-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .ad-slot .ad-note{font-size:13.5px}
+
+  /* ---------- sections & tool cards ---------- */
+  section.tool{padding:38px 0 6px;scroll-margin-top:76px}
+  .sec-head{margin-bottom:16px}
+  .sec-head .no{
+    font-family:"Tiro Bangla",serif;font-style:italic;color:var(--red);font-size:15px;display:block;margin-bottom:2px;
+  }
+  .sec-head h2{font-size:clamp(24px,3.6vw,31px)}
+  .sec-head p{color:var(--ink-soft);margin:6px 0 0;max-width:44em}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:22px;
+  }
+  label.flabel{display:block;font-size:13.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  input[type="text"],input[type="number"],input[type="date"],select,textarea{
+    width:100%;font-family:inherit;font-size:16px;color:var(--ink);
+    background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 11px;
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+  .row-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+
+  table.calc{width:100%;border-collapse:collapse;font-size:15px}
+  table.calc th{
+    text-align:left;font-size:13px;color:var(--ink-soft);font-weight:600;
+    padding:6px 8px;border-bottom:2px solid var(--line);
+  }
+  table.calc td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table.calc td.num,table.calc th.num{text-align:right}
+  table.calc input{padding:7px 9px;font-size:15px}
+  .grade-pill{
+    display:inline-block;min-width:52px;text-align:center;font-weight:700;font-size:14px;
+    padding:3px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-soft);
+  }
+  .grade-pill.good{background:var(--ok-bg);color:var(--ok)}
+  .grade-pill.mid{background:var(--amber-soft);color:var(--amber)}
+  .grade-pill.fail{background:var(--bad-bg);color:var(--bad)}
+  .icon-btn{
+    border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;
+    width:34px;height:34px;border-radius:8px;font-size:17px;line-height:1;flex-shrink:0;
+  }
+  .icon-btn:hover{color:var(--bad);border-color:var(--bad)}
+  .result-box{
+    margin-top:18px;border-radius:12px;padding:18px 20px;display:none;
+    background:var(--green-soft);border:1px solid var(--line);
+  }
+  .result-box.show{display:block}
+  .result-box .big{font-family:"Tiro Bangla",serif;font-size:clamp(30px,5vw,40px);line-height:1.15}
+  .result-box .sub{color:var(--ink-soft);font-size:15px;margin-top:4px}
+  .verdict{display:inline-block;font-weight:700;font-size:14.5px;padding:4px 13px;border-radius:999px;margin-top:10px}
+  .verdict.ok{background:var(--ok);color:#fff}
+  .verdict.no{background:var(--bad);color:#fff}
+  @media (prefers-color-scheme: dark){ .verdict.ok,.verdict.no{color:#0d130f} }
+  .hint{font-size:13.5px;color:var(--ink-soft);margin-top:10px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-grid .full{grid-column:1/-1}
+
+  /* ---------- timer ---------- */
+  .timer-flex{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .dial{position:relative;width:210px;height:210px;flex-shrink:0;margin:0 auto}
+  .dial svg{transform:rotate(-90deg)}
+  .dial .track{stroke:var(--surface-2)}
+  .dial .prog{stroke:var(--green);transition:stroke-dashoffset .5s linear}
+  .dial-center{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  }
+  .dial-center .time{font-family:"Tiro Bangla",serif;font-size:46px;line-height:1}
+  .dial-center .mode{font-size:13.5px;color:var(--ink-soft);font-weight:600}
+  .mode-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .mode-tabs button{
+    font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
+    padding:8px 14px;border-radius:999px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink-soft);
+  }
+  .mode-tabs button.active{background:var(--green);border-color:var(--green);color:#fff}
+  @media (prefers-color-scheme: dark){ .mode-tabs button.active{color:#0d130f} }
+
+  /* ---------- reference tables ---------- */
+  .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  table.ref{width:100%;border-collapse:collapse;font-size:15px}
+  table.ref caption{
+    text-align:left;font-family:"Tiro Bangla",serif;font-size:18px;padding-bottom:10px;color:var(--ink);
+  }
+  table.ref th{text-align:left;font-size:13px;color:var(--ink-soft);padding:7px 9px;border-bottom:2px solid var(--line)}
+  table.ref td{padding:7px 9px;border-bottom:1px solid var(--line)}
+  table.ref td.r,table.ref th.r{text-align:right}
+
+  /* ---------- tips & faq ---------- */
+  .tips{list-style:none;margin:0;padding:0;counter-reset:tip}
+  .tips li{
+    display:flex;gap:16px;padding:16px 0;border-top:1px solid var(--line);
+  }
+  .tips li:first-child{border-top:none;padding-top:4px}
+  .tips .n{
+    counter-increment:tip;flex-shrink:0;width:38px;height:38px;border-radius:50%;
+    border:1.5px solid var(--green);color:var(--green);display:grid;place-items:center;
+    font-family:"Tiro Bangla",serif;font-size:17px;
+  }
+  .tips .n::before{content:counter(tip, bengali)}
+  .tips h3{font-size:18.5px;margin-bottom:3px}
+  .tips p{margin:0;color:var(--ink-soft);font-size:15.5px}
+  details.faq{border-top:1px solid var(--line);padding:13px 2px}
+  details.faq:first-of-type{border-top:none}
+  details.faq summary{cursor:pointer;font-weight:600;font-size:16.5px}
+  details.faq p{color:var(--ink-soft);margin:8px 0 2px}
+
+  .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:8px 0 0}
+  .stat-strip .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 10px;text-align:center}
+  .stat-strip .stat b{display:block;font-size:19px;color:var(--green)}
+  .stat-strip .stat span{font-size:12.5px;color:var(--ink-soft)}
+
+  footer{margin-top:52px;border-top:1px solid var(--line);padding:26px 0 40px;color:var(--ink-soft);font-size:14px}
+  footer .cols{display:flex;gap:26px;flex-wrap:wrap;justify-content:space-between}
+  footer b{color:var(--ink)}
+
+  .word-out{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .word-out .chip{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:8px 13px;font-size:14.5px}
+  .word-out .chip b{color:var(--green);font-size:16px}
+
+  @media (max-width:760px){
+    .hero-grid{grid-template-columns:1fr}
+    .ref-grid{grid-template-columns:1fr}
+    .form-grid{grid-template-columns:1fr}
+    .stat-strip{grid-template-columns:repeat(2,1fr)}
+    .card{padding:17px}
+    table.calc th:nth-child(1){width:38%}
+    .brand small{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark">প</span>
+      <span><b>BD Study Tools</b><small>বাংলাদেশের শিক্ষার্থীদের ফ্রি টুল</small></span>
+    </a>
+    <nav class="main" aria-label="টুলসমূহ">
+      <a href="#gpa">GPA</a>
+      <a href="#cgpa">CGPA</a>
+      <a href="#jobage">চাকরির বয়স</a>
+      <a href="#timer">ফোকাস টাইমার</a>
+      <a href="#wordcount">ওয়ার্ড কাউন্টার</a>
+      <a href="#guide">গাইড</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="flag-chip"><span class="flag-dot"></span> SSC · HSC · বিশ্ববিদ্যালয় · BCS ও সরকারি চাকরি</span>
+        <h1>পড়াশোনার হিসাব,<br />এবার <span class="u">এক জায়গায়।</span></h1>
+        <p class="lead">নম্বর থেকে GPA, সেমিস্টার থেকে CGPA, আর জন্মতারিখ থেকে চাকরির আবেদনের বয়স যোগ্য কিনা — বাংলাদেশের গ্রেডিং পদ্ধতি অনুযায়ী নির্ভুল হিসাব, সম্পূর্ণ ফ্রি। কোনো সাইন-আপ লাগবে না।</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#gpa">GPA হিসাব করো</a>
+          <a class="btn btn-ghost" href="#jobage">চাকরির বয়স যাচাই করো</a>
+        </div>
+        <div class="stat-strip">
+          <div class="stat"><b>৬টি</b><span>ফ্রি টুল</span></div>
+          <div class="stat"><b>৫.০০</b><span>স্কেলে SSC/HSC GPA</span></div>
+          <div class="stat"><b>৪.০০</b><span>স্কেলে বিশ্ববিদ্যালয় CGPA</span></div>
+          <div class="stat"><b>৩২ বছর</b><span>সরকারি চাকরিতে সর্বোচ্চ বয়সসীমা</span></div>
+        </div>
+      </div>
+      <aside class="hero-side" aria-label="কী কী পাবে">
+        <h3>এই পেজে যা যা আছে</h3>
+        <ul>
+          <li><b>০১</b><span><b>SSC/HSC GPA ক্যালকুলেটর</b> — ঐচ্ছিক বিষয়ের বোনাসসহ</span></li>
+          <li><b>০২</b><span><b>CGPA ক্যালকুলেটর</b> — ক্রেডিট অনুযায়ী ওয়েটেড হিসাব</span></li>
+          <li><b>০৩</b><span><b>চাকরির বয়স যাচাই</b> — BCS, ব্যাংক, প্রাইমারি ও সাধারণ সরকারি চাকরি</span></li>
+          <li><b>০৪</b><span><b>সঠিক বয়স ক্যালকুলেটর</b> — বছর, মাস, দিনে নির্ভুল বয়স</span></li>
+          <li><b>০৫</b><span><b>ফোকাস টাইমার</b> — পোমোডোরো পদ্ধতিতে পড়ার অভ্যাস</span></li>
+          <li><b>০৬</b><span><b>ওয়ার্ড কাউন্টার</b> — রচনা ও অ্যাসাইনমেন্টের শব্দ গণনা</span></li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- AD SLOT 1 -->
+  <div class="ad-slot" data-ad-slot="top-banner" role="complementary" aria-label="বিজ্ঞাপন">
+    <span class="ad-label">Advertisement</span>
+    <span class="ad-note">Adsterra Banner — 728×90 / 320×50</span>
+  </div>
+
+  <!-- 1. GPA -->
+  <section class="tool" id="gpa">
+    <div class="sec-head">
+      <span class="no">টুল — ০১</span>
+      <h2>SSC / HSC GPA ক্যালকুলেটর</h2>
+      <p>প্রতিটি বিষয়ে পাওয়া নম্বর (০–১০০) বসাও — গ্রেড আর পয়েন্ট সাথে সাথে দেখা যাবে। ঐচ্ছিক (৪র্থ) বিষয়ে ২.০০-এর বেশি পয়েন্ট বোনাস হিসেবে যোগ হয়, আর কোনো আবশ্যিক বিষয়ে ফেল (৩৩-এর কম) হলে পুরো ফলাফল ফেল — বোর্ডের নিয়ম অনুযায়ীই হিসাব করা হয়েছে।</p>
+    </div>
+    <div class="card">
+      <table class="calc" aria-label="GPA হিসাবের টেবিল">
+        <thead>
+          <tr><th>বিষয়</th><th style="width:110px">নম্বর (১০০)</th><th class="num" style="width:92px">গ্রেড</th><th class="num" style="width:70px">পয়েন্ট</th><th style="width:44px"></th></tr>
+        </thead>
+        <tbody id="gpaBody"></tbody>
+      </table>
+      <div class="row-actions">
+        <button class="btn btn-ghost btn-sm" type="button" id="gpaAdd">+ বিষয় যোগ করো</button>
+        <button class="btn btn-primary" type="button" id="gpaCalc">GPA হিসাব করো</button>
+      </div>
+
+      <table class="calc" style="margin-top:22px" aria-label="ঐচ্ছিক বিষয়">
+        <thead><tr><th>ঐচ্ছিক বিষয় (৪র্থ বিষয়)</th><th style="width:110px">নম্বর (১০০)</th><th class="num" style="width:92px">গ্রেড</th><th class="num" style="width:70px">পয়েন্ট</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="text" id="optName" value="উচ্চতর গণিত / জীববিজ্ঞান" aria-label="ঐচ্ছিক বিষয়ের নাম" /></td>
+            <td><input type="number" id="optMarks" min="0" max="100" placeholder="যেমন 85" aria-label="ঐচ্ছিক বিষয়ের নম্বর" /></td>
+            <td class="num"><span class="grade-pill" id="optGrade">—</span></td>
+            <td class="num" id="optPoint">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="result-box" id="gpaResult" role="status">
+        <div class="big" id="gpaBig">GPA 0.00</div>
+        <div class="sub" id="gpaSub"></div>
+        <span class="verdict ok" id="gpaVerdict"></span>
+      </div>
+      <p class="hint">টিপস: নম্বর না জানলে প্রত্যাশিত নম্বর বসিয়ে লক্ষ্য ঠিক করো — কোন বিষয়ে কত পেলে GPA 5.00 হবে, সেটা আগেভাগে জানলে পড়ার পরিকল্পনা সহজ হয়।</p>
+    </div>
+  </section>
+
+  <!-- 2. CGPA -->
+  <section class="tool" id="cgpa">
+    <div class="sec-head">
+      <span class="no">টুল — ০২</span>
+      <h2>বিশ্ববিদ্যালয় CGPA ক্যালকুলেটর</h2>
+      <p>প্রতিটি সেমিস্টারের GPA (৪.০০ স্কেলে) আর মোট ক্রেডিট বসাও। CGPA বের হবে ক্রেডিট-ওয়েটেড গড়ে — যেই সেমিস্টারে ক্রেডিট বেশি, তার প্রভাবও বেশি, ঠিক যেভাবে বিশ্ববিদ্যালয় হিসাব করে।</p>
+    </div>
+    <div class="card">
+      <table class="calc" aria-label="CGPA হিসাবের টেবিল">
+        <thead>
+          <tr><th>সেমিস্টার</th><th style="width:120px">GPA (০–৪.০০)</th><th style="width:120px">মোট ক্রেডিট</th><th style="width:44px"></th></tr>
+        </thead>
+        <tbody id="cgpaBody"></tbody>
+      </table>
+      <div class="row-actions">
+        <button class="btn btn-ghost btn-sm" type="button" id="cgpaAdd">+ সেমিস্টার যোগ করো</button>
+        <button class="btn btn-primary" type="button" id="cgpaCalc">CGPA হিসাব করো</button>
+      </div>
+      <div class="result-box" id="cgpaResult" role="status">
+        <div class="big" id="cgpaBig">CGPA 0.00</div>
+        <div class="sub" id="cgpaSub"></div>
+        <span class="verdict ok" id="cgpaVerdict"></span>
+      </div>
+      <p class="hint">উদাহরণ: ১ম সেমিস্টার GPA 3.50 (ক্রেডিট 18) আর ২য় সেমিস্টার GPA 3.75 (ক্রেডিট 21) হলে CGPA = (3.50×18 + 3.75×21) ÷ 39 = 3.63। সাধারণ গড় (3.62) নয় — ক্রেডিট বেশি সেমিস্টারটি টেনে তোলে।</p>
+    </div>
+  </section>
+
+  <!-- AD SLOT 2 -->
+  <div class="ad-slot" data-ad-slot="mid-native" role="complementary" aria-label="বিজ্ঞাপন">
+    <span class="ad-label">Advertisement</span>
+    <span class="ad-note">Adsterra Native / In-page — মাঝখানের স্লট</span>
+  </div>
+
+  <!-- 3. JOB AGE -->
+  <section class="tool" id="jobage">
+    <div class="sec-head">
+      <span class="no">টুল — ০৩</span>
+      <h2>BCS ও সরকারি চাকরির বয়স যাচাই</h2>
+      <p>বিজ্ঞপ্তিতে বয়স হিসাবের একটা নির্দিষ্ট তারিখ দেওয়া থাকে ("অমুক তারিখে বয়স … হতে হবে")। জন্মতারিখ আর সেই তারিখটা বসালেই জানতে পারবে ওই তারিখে তোমার বয়স কত হবে এবং আবেদনের যোগ্য কিনা। ২০২৪ সালের অধ্যাদেশ অনুযায়ী সরকারি চাকরিতে প্রবেশের সর্বোচ্চ বয়সসীমা এখন ৩২ বছর।</p>
+    </div>
+    <div class="card">
+      <div class="form-grid">
+        <div>
+          <label class="flabel" for="jobDob">তোমার জন্মতারিখ (সনদ অনুযায়ী)</label>
+          <input type="date" id="jobDob" />
+        </div>
+        <div>
+          <label class="flabel" for="jobRef">বিজ্ঞপ্তিতে বয়স হিসাবের তারিখ</label>
+          <input type="date" id="jobRef" />
+        </div>
+        <div class="full">
+          <label class="flabel" for="jobType">চাকরির ধরন</label>
+          <select id="jobType">
+            <option value="21,32">BCS (সাধারণ ক্যাডার) — ২১ থেকে ৩২ বছর</option>
+            <option value="18,32">সরকারি চাকরি (সাধারণ) — ১৮ থেকে ৩২ বছর</option>
+            <option value="21,32">ব্যাংক চাকরি (ব্যাংকার্স সিলেকশন কমিটি) — ২১ থেকে ৩২ বছর</option>
+            <option value="21,32">সরকারি প্রাথমিক বিদ্যালয়ের শিক্ষক — ২১ থেকে ৩২ বছর</option>
+            <option value="custom">কাস্টম — নিজে বয়সসীমা বসাবো</option>
+          </select>
+        </div>
+        <div id="customAge" style="display:none">
+          <label class="flabel" for="minAge">সর্বনিম্ন বয়স (বছর)</label>
+          <input type="number" id="minAge" min="0" max="60" value="18" />
+        </div>
+        <div id="customAge2" style="display:none">
+          <label class="flabel" for="maxAge">সর্বোচ্চ বয়স (বছর)</label>
+          <input type="number" id="maxAge" min="0" max="60" value="32" />
+        </div>
+      </div>
+      <div class="row-actions">
+        <button class="btn btn-primary" type="button" id="jobCalc">বয়স যাচাই করো</button>
+      </div>
+      <div class="result-box" id="jobResult" role="status">
+        <div class="big" id="jobBig"></div>
+        <div class="sub" id="jobSub"></div>
+        <span class="verdict ok" id="jobVerdict"></span>
+      </div>
+      <p class="hint">খেয়াল রাখো: জন্মতারিখ সবসময় SSC সনদেরটা ধরতে হবে — NID বা জন্মনিবন্ধনে ভিন্ন তারিখ থাকলে আবেদনের আগে সংশোধন করে নাও। কিছু পদে (কারিগরি/বিশেষায়িত, মুক্তিযোদ্ধা কোটা ইত্যাদি) বয়সসীমা আলাদা হতে পারে — চূড়ান্ত সিদ্ধান্তে সবসময় মূল বিজ্ঞপ্তিটাই প্রমাণ।</p>
+    </div>
+  </section>
+
+  <!-- 4. AGE CALC -->
+  <section class="tool" id="age">
+    <div class="sec-head">
+      <span class="no">টুল — ০৪</span>
+      <h2>সঠিক বয়স ক্যালকুলেটর</h2>
+      <p>জন্মতারিখ থেকে যেকোনো তারিখ পর্যন্ত বয়স — বছর, মাস ও দিনে। ভর্তি, পাসপোর্ট, NID কিংবা পরীক্ষার ফরম পূরণে কাজে লাগবে।</p>
+    </div>
+    <div class="card">
+      <div class="form-grid">
+        <div>
+          <label class="flabel" for="ageDob">জন্মতারিখ</label>
+          <input type="date" id="ageDob" />
+        </div>
+        <div>
+          <label class="flabel" for="ageRef">যে তারিখ পর্যন্ত বয়স</label>
+          <input type="date" id="ageRef" />
+        </div>
+      </div>
+      <div class="row-actions">
+        <button class="btn btn-primary" type="button" id="ageCalc">বয়স বের করো</button>
+      </div>
+      <div class="result-box" id="ageResult" role="status">
+        <div class="big" id="ageBig"></div>
+        <div class="sub" id="ageSub"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TIMER -->
+  <section class="tool" id="timer">
+    <div class="sec-head">
+      <span class="no">টুল — ০৫</span>
+      <h2>ফোকাস টাইমার — পোমোডোরো পদ্ধতি</h2>
+      <p>২৫ মিনিট একটানা মনোযোগ দিয়ে পড়া, তারপর ৫ মিনিট বিরতি — এই ছোট ছোট চক্রেই দীর্ঘক্ষণ পড়া টিকে থাকে। একটা বিষয় বা একটি অধ্যায় ধরে টাইমার চালু করে দাও, বাকিটা টাইমার মনে রাখবে।</p>
+    </div>
+    <div class="card">
+      <div class="timer-flex">
+        <div class="dial" aria-label="টাইমারের অগ্রগতি">
+          <svg width="210" height="210" viewBox="0 0 210 210">
+            <circle class="track" cx="105" cy="105" r="96" fill="none" stroke-width="10" />
+            <circle class="prog" id="dialProg" cx="105" cy="105" r="96" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="603.19" stroke-dashoffset="0" />
+          </svg>
+          <div class="dial-center">
+            <span class="time" id="timerText">25:00</span>
+            <span class="mode" id="timerMode">পড়ার সময়</span>
+          </div>
+        </div>
+        <div style="flex:1;min-width:230px">
+          <div class="mode-tabs" role="tablist" aria-label="টাইমার মোড">
+            <button type="button" class="active" data-mins="25" data-label="পড়ার সময়">পড়া · ২৫ মিনিট</button>
+            <button type="button" data-mins="5" data-label="ছোট বিরতি">বিরতি · ৫ মিনিট</button>
+            <button type="button" data-mins="50" data-label="গভীর পড়া">গভীর পড়া · ৫০ মিনিট</button>
+          </div>
+          <div class="row-actions" style="margin-top:0">
+            <button class="btn btn-primary" type="button" id="timerStart">শুরু করো</button>
+            <button class="btn btn-ghost" type="button" id="timerReset">রিসেট</button>
+          </div>
+          <p class="hint" id="timerStatus">আজ সম্পন্ন সেশন: ০টি · মোট ফোকাস: ০ মিনিট</p>
+          <p class="hint">টাইমার চলাকালে ফোনটা অন্য ঘরে রেখে দাও — গবেষণায় দেখা গেছে, ফোন শুধু চোখের সামনে থাকলেই মনোযোগ কমে, ব্যবহার না করলেও।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. WORD COUNTER -->
+  <section class="tool" id="wordcount">
+    <div class="sec-head">
+      <span class="no">টুল — ০৬</span>
+      <h2>ওয়ার্ড কাউন্টার — রচনা ও অ্যাসাইনমেন্টের জন্য</h2>
+      <p>BCS-এর লিখিত পরীক্ষা, বিশ্ববিদ্যালয়ের অ্যাসাইনমেন্ট বা ভর্তির রচনা — নির্দিষ্ট শব্দসীমা মানতে হয় প্রায়ই। লেখা পেস্ট করলেই শব্দ, অক্ষর আর পড়তে কতক্ষণ লাগবে — সব দেখা যাবে। বাংলা ও ইংরেজি দুটোই চলে।</p>
+    </div>
+    <div class="card">
+      <textarea id="wordText" rows="7" placeholder="এখানে তোমার লেখা পেস্ট করো বা টাইপ করো…" aria-label="লেখা বসানোর ঘর"></textarea>
+      <div class="word-out" aria-live="polite">
+        <span class="chip">শব্দ: <b id="wcWords">০</b></span>
+        <span class="chip">অক্ষর: <b id="wcChars">০</b></span>
+        <span class="chip">স্পেস ছাড়া অক্ষর: <b id="wcCharsNo">০</b></span>
+        <span class="chip">বাক্য: <b id="wcSent">০</b></span>
+        <span class="chip">পড়তে লাগবে: <b id="wcRead">০ মিনিট</b></span>
+      </div>
+      <p class="hint">রচনা প্রতিযোগিতা বা পরীক্ষায় সাধারণত "±১০%" ছাড় দেওয়া হয় — যেমন ৫০০ শব্দের রচনা মানে ৪৫০–৫৫০ শব্দের মধ্যে থাকলেই নিরাপদ।</p>
+    </div>
+  </section>
+
+  <!-- GUIDE -->
+  <section class="tool" id="guide">
+    <div class="sec-head">
+      <span class="no">রেফারেন্স</span>
+      <h2>গ্রেডিং পদ্ধতি — এক নজরে</h2>
+      <p>ক্যালকুলেটরগুলো ঠিক এই দুই টেবিল অনুযায়ী হিসাব করে — জাতীয় শিক্ষাক্রমের স্কুল-কলেজ গ্রেডিং আর UGC-র বিশ্ববিদ্যালয় গ্রেডিং।</p>
+    </div>
+    <div class="card">
+      <div class="ref-grid">
+        <table class="ref" aria-label="SSC HSC গ্রেডিং টেবিল">
+          <caption>SSC / HSC (বোর্ড)</caption>
+          <thead><tr><th>নম্বর</th><th>লেটার গ্রেড</th><th class="r">গ্রেড পয়েন্ট</th></tr></thead>
+          <tbody>
+            <tr><td>৮০–১০০</td><td>A+</td><td class="r">5.00</td></tr>
+            <tr><td>৭০–৭৯</td><td>A</td><td class="r">4.00</td></tr>
+            <tr><td>৬০–৬৯</td><td>A−</td><td class="r">3.50</td></tr>
+            <tr><td>৫০–৫৯</td><td>B</td><td class="r">3.00</td></tr>
+            <tr><td>৪০–৪৯</td><td>C</td><td class="r">2.00</td></tr>
+            <tr><td>৩৩–৩৯</td><td>D</td><td class="r">1.00</td></tr>
+            <tr><td>০–৩২</td><td>F</td><td class="r">0.00</td></tr>
+          </tbody>
+        </table>
+        <table class="ref" aria-label="বিশ্ববিদ্যালয় গ্রেডিং টেবিল">
+          <caption>বিশ্ববিদ্যালয় (UGC)</caption>
+          <thead><tr><th>নম্বর (%)</th><th>লেটার গ্রেড</th><th class="r">গ্রেড পয়েন্ট</th></tr></thead>
+          <tbody>
+            <tr><td>৮০–১০০</td><td>A+</td><td class="r">4.00</td></tr>
+            <tr><td>৭৫–৭৯</td><td>A</td><td class="r">3.75</td></tr>
+            <tr><td>৭০–৭৪</td><td>A−</td><td class="r">3.50</td></tr>
+            <tr><td>৬৫–৬৯</td><td>B+</td><td class="r">3.25</td></tr>
+            <tr><td>৬০–৬৪</td><td>B</td><td class="r">3.00</td></tr>
+            <tr><td>৫৫–৫৯</td><td>B−</td><td class="r">2.75</td></tr>
+            <tr><td>৫০–৫৪</td><td>C+</td><td class="r">2.50</td></tr>
+            <tr><td>৪৫–৪৯</td><td>C</td><td class="r">2.25</td></tr>
+            <tr><td>৪০–৪৪</td><td>D</td><td class="r">2.00</td></tr>
+            <tr><td>৪০-এর কম</td><td>F</td><td class="r">0.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section class="tool" id="tips">
+    <div class="sec-head">
+      <span class="no">পড়ার কৌশল</span>
+      <h2>যে অভ্যাসগুলো আসলেই কাজ করে</h2>
+    </div>
+    <div class="card">
+      <ol class="tips">
+        <li><span class="n" aria-hidden="true"></span><div>
+          <h3>পড়ার আগে হিসাবটা জেনে নাও</h3>
+          <p>লক্ষ্য অস্পষ্ট থাকলে পড়ায় গতি আসে না। উপরের GPA ক্যালকুলেটরে প্রত্যাশিত নম্বর বসিয়ে দেখো কোন বিষয়ে কতটা উন্নতি দরকার — তারপর সেই বিষয়েই সময় বেশি দাও।</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true"></span><div>
+          <h3>নিজে পরীক্ষা দাও, শুধু পড়ো না</h3>
+          <p>একই অধ্যায় বারবার পড়ার চেয়ে বই বন্ধ করে মনে মনে উত্তর বলা (active recall) অনেক বেশি মনে থাকে। প্রতিদিনের পড়া শেষে নিজেকে ৫টা প্রশ্ন করো।</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true"></span><div>
+          <h3>ব্যবধানে পুনরাবৃত্তি (spaced repetition)</h3>
+          <p>আজ পড়া বিষয়টা কাল, তার ৩ দিন পর, তারপর ১ সপ্তাহ পর — এভাবে ছোট ছোট বিরতিতে রিভিশন দিলে পরীক্ষার হলে মনে পড়ে। রিভিশনের তারিখগুলো খাতায় লিখে রাখো।</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true"></span><div>
+          <h3>গত বছরের প্রশ্ন আগে শেষ করো</h3>
+          <p>SSC/HSC হোক বা BCS — বোর্ড ও PSC প্রশ্নের ধরন প্রায় একই থাকে। বই শেষ করার অপেক্ষা না করে অধ্যায় শেষ হলেই ওই অধ্যায়ের বিগত প্রশ্নগুলো সমাধান করো।</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true"></span><div>
+          <h3>চাকরির বয়সের হিসাব আগেভাগে রাখো</h3>
+          <p>সরকারি চাকরির প্রস্তুতি দীর্ঘমেয়াদি। বয়সসীমা ৩২ — কোন বছরের কোন বিজ্ঞপ্তিতে তুমি যোগ্য থাকবে, সেটা উপরের টুলে এখনই মিলিয়ে একটা বাস্তব সময়সীমা ঠিক করে ফেলো।</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true"></span><div>
+          <h3>ঘুমকে পড়ার অংশ মনে করো</h3>
+          <p>পরীক্ষার আগের রাতে জেগে পড়া লাভের চেয়ে ক্ষতি বেশি করে — দিনের পড়া মনে গেঁথে যেতে ঘুমই দরকার। প্রতিদিন অন্তত ৭ ঘণ্টা ঘুমের সময়টা রুটিনে আগে বসাও।</p>
+        </div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="tool" id="faq">
+    <div class="sec-head">
+      <span class="no">সাধারণ প্রশ্ন</span>
+      <h2>জিজ্ঞাসা</h2>
+    </div>
+    <div class="card">
+      <details class="faq">
+        <summary>ঐচ্ছিক বিষয়ের বোনাস কীভাবে হিসাব হয়?</summary>
+        <p>ঐচ্ছিক (৪র্থ) বিষয়ে পাওয়া গ্রেড পয়েন্ট থেকে ২.০০ বিয়োগ করে বাকিটা মোট পয়েন্টে যোগ হয়। যেমন ঐচ্ছিকে A+ (5.00) পেলে বোনাস 3.00। তবে কোনো আবশ্যিক বিষয়ে F থাকলে ঐচ্ছিকের বোনাসেও পাস হয় না।</p>
+      </details>
+      <details class="faq">
+        <summary>এক বিষয়ে ফেল করলে কি GPA 0 হয়ে যায়?</summary>
+        <p>হ্যাঁ। SSC/HSC-তে যেকোনো আবশ্যিক বিষয়ে ৩৩-এর কম পেলে ফলাফল অকৃতকার্য (GPA 0.00) ধরা হয়, বাকি সব বিষয়ে A+ থাকলেও। ক্যালকুলেটরও ঠিক এই নিয়মেই ফল দেখায়।</p>
+      </details>
+      <details class="faq">
+        <summary>BCS-এ আবেদনের বয়সসীমা কত?</summary>
+        <p>বিজ্ঞপ্তিতে উল্লেখিত তারিখে সাধারণ প্রার্থীদের বয়স ২১ থেকে ৩২ বছরের মধ্যে হতে হয়। ২০২৪ সালের অধ্যাদেশে সরকারি চাকরিতে প্রবেশের সর্বোচ্চ বয়সসীমা ৩০ থেকে বাড়িয়ে ৩২ করা হয়েছে। তবে প্রতিটি বিজ্ঞপ্তির নিজস্ব শর্তই চূড়ান্ত — আবেদনের আগে বিজ্ঞপ্তির বয়স-সংক্রান্ত অনুচ্ছেদটা পড়ে নাও।</p>
+      </details>
+      <details class="faq">
+        <summary>CGPA আর GPA-এর মধ্যে পার্থক্য কী?</summary>
+        <p>GPA হলো একটি সেমিস্টার বা একটি পরীক্ষার ফল; CGPA হলো সব সেমিস্টারের GPA-এর ক্রেডিট-ওয়েটেড গড় — অর্থাৎ পুরো ডিগ্রির সামগ্রিক ফল। বিশ্ববিদ্যালয়ে চাকরি বা উচ্চশিক্ষার আবেদনে সাধারণত CGPA-টাই চাওয়া হয়।</p>
+      </details>
+      <details class="faq">
+        <summary>আমার দেওয়া তথ্য কি কোথাও সংরক্ষণ হয়?</summary>
+        <p>না। সব হিসাব তোমার নিজের ব্রাউজারেই হয় — জন্মতারিখ বা নম্বর কোনো সার্ভারে পাঠানো হয় না, পেজ বন্ধ করলেই সব মুছে যায়।</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- AD SLOT 3 -->
+  <div class="ad-slot" data-ad-slot="footer-banner" role="complementary" aria-label="বিজ্ঞাপন">
+    <span class="ad-label">Advertisement</span>
+    <span class="ad-note">Adsterra Banner — নিচের স্লট</span>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <b>BD Study Tools</b><br />
+      SSC/HSC গ্রেডিং জাতীয় শিক্ষা বোর্ডের এবং বিশ্ববিদ্যালয় গ্রেডিং UGC-র প্রচলিত স্কেল অনুযায়ী।<br />
+      চূড়ান্ত ফলাফলের জন্য সবসময় তোমার বোর্ড/বিশ্ববিদ্যালয়ের অফিসিয়াল ফলাফল ও মূল বিজ্ঞপ্তিই প্রমাণ।
+    </div>
+    <div>
+      টুলসমূহ: <a href="#gpa">GPA</a> · <a href="#cgpa">CGPA</a> · <a href="#jobage">চাকরির বয়স</a> · <a href="#age">বয়স</a> · <a href="#timer">টাইমার</a> · <a href="#wordcount">ওয়ার্ড কাউন্টার</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var BN = ["০","১","২","৩","৪","৫","৬","৭","৮","৯"];
+  function bn(str){
+    return String(str).replace(/[0-9]/g, function(d){ return BN[+d]; });
+  }
+  function bnNum(n, dec){
+    var s = (dec != null) ? Number(n).toFixed(dec) : String(n);
+    return bn(s);
+  }
+
+  /* ---------- grading ---------- */
+  function markToGrade(m){
+    if (m >= 80) return { letter:"A+", point:5.00, cls:"good" };
+    if (m >= 70) return { letter:"A",  point:4.00, cls:"good" };
+    if (m >= 60) return { letter:"A−", point:3.50, cls:"good" };
+    if (m >= 50) return { letter:"B",  point:3.00, cls:"mid" };
+    if (m >= 40) return { letter:"C",  point:2.00, cls:"mid" };
+    if (m >= 33) return { letter:"D",  point:1.00, cls:"mid" };
+    return { letter:"F", point:0.00, cls:"fail" };
+  }
+
+  /* ---------- GPA calculator ---------- */
+  var gpaBody = document.getElementById("gpaBody");
+  var defaultSubjects = ["বাংলা","ইংরেজি","গণিত","বিজ্ঞান / পদার্থবিজ্ঞান","রসায়ন / সমাজবিজ্ঞান","জীববিজ্ঞান / হিসাববিজ্ঞান","ধর্ম ও নৈতিক শিক্ষা","তথ্য ও যোগাযোগ প্রযুক্তি"];
+  function gpaRow(name){
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><input type="text" class="gpa-name" value="" aria-label="বিষয়ের নাম" /></td>' +
+      '<td><input type="number" class="gpa-marks" min="0" max="100" placeholder="—" aria-label="নম্বর" /></td>' +
+      '<td class="num"><span class="grade-pill">—</span></td>' +
+      '<td class="num gpa-point">—</td>' +
+      '<td><button type="button" class="icon-btn" aria-label="বিষয় মুছুন">×</button></td>';
+    tr.querySelector(".gpa-name").value = name || "";
+    var marks = tr.querySelector(".gpa-marks");
+    marks.addEventListener("input", function(){ updateGpaRow(tr); });
+    tr.querySelector(".icon-btn").addEventListener("click", function(){
+      if (gpaBody.rows.length > 1) tr.remove();
+    });
+    gpaBody.appendChild(tr);
+    return tr;
+  }
+  function updateGpaRow(tr){
+    var v = parseFloat(tr.querySelector(".gpa-marks").value);
+    var pill = tr.querySelector(".grade-pill");
+    var pt = tr.querySelector(".gpa-point");
+    if (isNaN(v) || v < 0 || v > 100) { pill.textContent = "—"; pill.className = "grade-pill"; pt.textContent = "—"; return null; }
+    var g = markToGrade(v);
+    pill.textContent = g.letter; pill.className = "grade-pill " + g.cls;
+    pt.textContent = bnNum(g.point, 2);
+    return g;
+  }
+  defaultSubjects.forEach(function(s){ gpaRow(s); });
+  document.getElementById("gpaAdd").addEventListener("click", function(){ gpaRow(""); });
+
+  var optMarks = document.getElementById("optMarks");
+  function updateOpt(){
+    var v = parseFloat(optMarks.value);
+    var pill = document.getElementById("optGrade");
+    var pt = document.getElementById("optPoint");
+    if (isNaN(v) || v < 0 || v > 100) { pill.textContent = "—"; pill.className = "grade-pill"; pt.textContent = "—"; return null; }
+    var g = markToGrade(v);
+    pill.textContent = g.letter; pill.className = "grade-pill " + g.cls;
+    pt.textContent = bnNum(g.point, 2);
+    return g;
+  }
+  optMarks.addEventListener("input", updateOpt);
+
+  document.getElementById("gpaCalc").addEventListener("click", function(){
+    var rows = gpaBody.querySelectorAll("tr");
+    var total = 0, count = 0, failed = 0, missing = 0;
+    rows.forEach(function(tr){
+      var v = parseFloat(tr.querySelector(".gpa-marks").value);
+      if (isNaN(v)) { missing++; return; }
+      var g = markToGrade(Math.max(0, Math.min(100, v)));
+      total += g.point; count++;
+      if (g.point === 0) failed++;
+    });
+    var box = document.getElementById("gpaResult");
+    var big = document.getElementById("gpaBig");
+    var sub = document.getElementById("gpaSub");
+    var verdict = document.getElementById("gpaVerdict");
+    box.classList.add("show");
+    if (count === 0) {
+      big.textContent = "নম্বর বসাও";
+      sub.textContent = "অন্তত একটি বিষয়ের নম্বর বসিয়ে আবার চেষ্টা করো।";
+      verdict.style.display = "none";
+      return;
+    }
+    var opt = updateOpt();
+    var bonus = 0;
+    if (opt) bonus = Math.max(0, opt.point - 2);
+    var gpa;
+    if (failed > 0) {
+      gpa = 0;
+      big.textContent = "GPA " + bnNum(0, 2);
+      sub.textContent = bn(count) + "টি আবশ্যিক বিষয়ের মধ্যে " + bn(failed) + "টিতে ফেল (৩৩-এর কম) — বোর্ডের নিয়মে ফলাফল অকৃতকার্য।" + (missing ? " (আরও " + bn(missing) + "টি বিষয়ের নম্বর বসানো হয়নি)" : "");
+      verdict.textContent = "অকৃতকার্য"; verdict.className = "verdict no"; verdict.style.display = "";
+    } else {
+      gpa = (total + bonus) / count;
+      if (gpa > 5) gpa = 5;
+      big.textContent = "GPA " + bnNum(gpa, 2);
+      sub.textContent = "আবশ্যিক বিষয় " + bn(count) + "টি · মোট পয়েন্ট " + bnNum(total, 2) +
+        (opt ? " · ঐচ্ছিক বোনাস +" + bnNum(bonus, 2) : " · ঐচ্ছিক বিষয়ের নম্বর বসানো হয়নি") +
+        (missing ? " · " + bn(missing) + "টি বিষয় ফাঁকা রাখা হয়েছে" : "");
+      if (gpa >= 5) { verdict.textContent = "অভিনন্দন — সর্বোচ্চ ফলাফল!"; }
+      else if (gpa >= 4) { verdict.textContent = "চমৎকার ফলাফল"; }
+      else if (gpa >= 3.5) { verdict.textContent = "ভালো ফলাফল"; }
+      else if (gpa >= 3) { verdict.textContent = "মোটামুটি — আরেকটু এগোনো যায়"; }
+      else { verdict.textContent = "পাস — পরের বার আরও ভালোর সুযোগ আছে"; }
+      verdict.className = "verdict ok"; verdict.style.display = "";
+    }
+    box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  });
+
+  /* ---------- CGPA calculator ---------- */
+  var cgpaBody = document.getElementById("cgpaBody");
+  var semNames = ["১ম সেমিস্টার","২য় সেমিস্টার","৩য় সেমিস্টার","৪র্থ সেমিস্টার","৫ম সেমিস্টার","৬ষ্ঠ সেমিস্টার","৭ম সেমিস্টার","৮ম সেমিস্টার","৯ম সেমিস্টার","১০ম সেমিস্টার","১১তম সেমিস্টার","১২তম সেমিস্টার"];
+  var semCount = 0;
+  function cgpaRow(){
+    semCount++;
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><input type="text" class="cg-name" aria-label="সেমিস্টারের নাম" /></td>' +
+      '<td><input type="number" class="cg-gpa" min="0" max="4" step="0.01" placeholder="যেমন 3.50" aria-label="সেমিস্টার GPA" /></td>' +
+      '<td><input type="number" class="cg-credit" min="0" step="0.5" placeholder="যেমন 18" aria-label="মোট ক্রেডিট" /></td>' +
+      '<td><button type="button" class="icon-btn" aria-label="সেমিস্টার মুছুন">×</button></td>';
+    tr.querySelector(".cg-name").value = semNames[semCount - 1] || (bn(semCount) + " নং সেমিস্টার");
+    tr.querySelector(".icon-btn").addEventListener("click", function(){
+      if (cgpaBody.rows.length > 1) tr.remove();
+    });
+    cgpaBody.appendChild(tr);
+  }
+  cgpaRow(); cgpaRow(); cgpaRow(); cgpaRow();
+  document.getElementById("cgpaAdd").addEventListener("click", cgpaRow);
+  document.getElementById("cgpaCalc").addEventListener("click", function(){
+    var rows = cgpaBody.querySelectorAll("tr");
+    var wSum = 0, cSum = 0, used = 0;
+    rows.forEach(function(tr){
+      var g = parseFloat(tr.querySelector(".cg-gpa").value);
+      var c = parseFloat(tr.querySelector(".cg-credit").value);
+      if (!isNaN(g) && !isNaN(c) && c > 0) {
+        g = Math.max(0, Math.min(4, g));
+        wSum += g * c; cSum += c; used++;
+      }
+    });
+    var box = document.getElementById("cgpaResult");
+    var big = document.getElementById("cgpaBig");
+    var sub = document.getElementById("cgpaSub");
+    var verdict = document.getElementById("cgpaVerdict");
+    box.classList.add("show");
+    if (used === 0 || cSum === 0) {
+      big.textContent = "তথ্য বসাও";
+      sub.textContent = "অন্তত একটি সেমিস্টারের GPA ও ক্রেডিট বসাও।";
+      verdict.style.display = "none";
+      return;
+    }
+    var cgpa = wSum / cSum;
+    big.textContent = "CGPA " + bnNum(cgpa, 2);
+    sub.textContent = bn(used) + "টি সেমিস্টার · মোট ক্রেডিট " + bnNum(cSum, cSum % 1 ? 1 : 0);
+    var label;
+    if (cgpa >= 3.75) label = "সম্মান শ্রেণি — First Class Honours মানের";
+    else if (cgpa >= 3.00) label = "First Class মানের ফলাফল";
+    else if (cgpa >= 2.75) label = "Second Class (Upper) মানের";
+    else if (cgpa >= 2.25) label = "Second Class (Lower) মানের";
+    else if (cgpa >= 2.00) label = "Third Class মানের — উন্নতির সুযোগ আছে";
+    else label = "পাসের নিচে — বিশ্ববিদ্যালয়ের নিয়ম দেখো";
+    verdict.textContent = label; verdict.className = "verdict ok"; verdict.style.display = "";
+    box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  });
+
+  /* ---------- exact age ---------- */
+  function exactAge(dob, ref){
+    var y = ref.getFullYear() - dob.getFullYear();
+    var m = ref.getMonth() - dob.getMonth();
+    var d = ref.getDate() - dob.getDate();
+    if (d < 0) {
+      m--;
+      d += new Date(ref.getFullYear(), ref.getMonth(), 0).getDate();
+    }
+    if (m < 0) { y--; m += 12; }
+    var totalDays = Math.floor((ref - dob) / 86400000);
+    return { y:y, m:m, d:d, totalDays:totalDays };
+  }
+  function parseDate(id){
+    var v = document.getElementById(id).value;
+    if (!v) return null;
+    var p = v.split("-");
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  function ageText(a){
+    return bn(a.y) + " বছর " + bn(a.m) + " মাস " + bn(a.d) + " দিন";
+  }
+
+  /* job age */
+  var jobType = document.getElementById("jobType");
+  jobType.addEventListener("change", function(){
+    var custom = jobType.value === "custom";
+    document.getElementById("customAge").style.display = custom ? "" : "none";
+    document.getElementById("customAge2").style.display = custom ? "" : "none";
+  });
+  document.getElementById("jobCalc").addEventListener("click", function(){
+    var dob = parseDate("jobDob");
+    var ref = parseDate("jobRef");
+    var box = document.getElementById("jobResult");
+    var big = document.getElementById("jobBig");
+    var sub = document.getElementById("jobSub");
+    var verdict = document.getElementById("jobVerdict");
+    box.classList.add("show");
+    if (!dob || !ref) {
+      big.textContent = "তারিখ বসাও";
+      sub.textContent = "জন্মতারিখ এবং বিজ্ঞপ্তির বয়স হিসাবের তারিখ — দুটোই লাগবে।";
+      verdict.style.display = "none";
+      return;
+    }
+    if (ref < dob) {
+      big.textContent = "তারিখ মিলছে না";
+      sub.textContent = "বয়স হিসাবের তারিখ জন্মতারিখের আগের হতে পারে না।";
+      verdict.style.display = "none";
+      return;
+    }
+    var minY, maxY;
+    if (jobType.value === "custom") {
+      minY = parseInt(document.getElementById("minAge").value, 10) || 0;
+      maxY = parseInt(document.getElementById("maxAge").value, 10) || 0;
+    } else {
+      var parts = jobType.value.split(",");
+      minY = +parts[0]; maxY = +parts[1];
+    }
+    var a = exactAge(dob, ref);
+    big.textContent = "বয়স: " + ageText(a);
+    sub.textContent = "শর্ত: ওই তারিখে বয়স " + bn(minY) + " থেকে " + bn(maxY) + " বছরের মধ্যে হতে হবে।";
+    var ageYears = a.y + (a.m / 12) + (a.d / 365.25);
+    if (a.y < minY || (a.y === minY && (a.m > 0 || a.d > 0) && minY === a.y && false)) { /* exact check below */ }
+    var eligible;
+    if (a.y < minY) eligible = false;
+    else if (a.y > maxY) eligible = false;
+    else if (a.y === maxY && (a.m > 0 || a.d > 0)) eligible = false; /* maxY পূর্ণ হওয়ার পরের দিন থেকে অযোগ্য */
+    else eligible = true;
+    if (a.y === maxY && a.m === 0 && a.d === 0) eligible = true;
+    void ageYears;
+    if (eligible) {
+      verdict.textContent = "✓ আবেদনের যোগ্য";
+      verdict.className = "verdict ok";
+    } else if (a.y < minY) {
+      verdict.textContent = "✗ বয়স এখনো কম — " + bn(minY) + " বছর পূর্ণ হয়নি";
+      verdict.className = "verdict no";
+    } else {
+      verdict.textContent = "✗ বয়সসীমা পার হয়ে গেছে (সর্বোচ্চ " + bn(maxY) + " বছর)";
+      verdict.className = "verdict no";
+    }
+    verdict.style.display = "";
+    box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  });
+
+  /* general age */
+  var today = new Date();
+  var iso = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
+  document.getElementById("ageRef").value = iso;
+  document.getElementById("jobRef").value = iso;
+  document.getElementById("ageCalc").addEventListener("click", function(){
+    var dob = parseDate("ageDob");
+    var ref = parseDate("ageRef");
+    var box = document.getElementById("ageResult");
+    var big = document.getElementById("ageBig");
+    var sub = document.getElementById("ageSub");
+    box.classList.add("show");
+    if (!dob || !ref) {
+      big.textContent = "তারিখ বসাও";
+      sub.textContent = "জন্মতারিখ বসালে বয়স বের হয়ে যাবে।";
+      return;
+    }
+    if (ref < dob) {
+      big.textContent = "তারিখ মিলছে না";
+      sub.textContent = "শেষ তারিখটি জন্মতারিখের আগের হতে পারে না।";
+      return;
+    }
+    var a = exactAge(dob, ref);
+    big.textContent = ageText(a);
+    sub.textContent = "মোট " + bn(a.totalDays.toLocaleString("en-IN")) + " দিন · প্রায় " + bnNum(a.y + a.m / 12, 1) + " বছর";
+  });
+
+  /* ---------- pomodoro timer ---------- */
+  var CIRC = 603.19;
+  var totalSecs = 25 * 60, remainSecs = totalSecs, timerId = null, running = false;
+  var focusDoneMins = 0, sessionsDone = 0, currentMins = 25;
+  var timerText = document.getElementById("timerText");
+  var timerMode = document.getElementById("timerMode");
+  var prog = document.getElementById("dialProg");
+  var startBtn = document.getElementById("timerStart");
+  function fmt(s){
+    var mm = Math.floor(s / 60), ss = s % 60;
+    return bn(String(mm).padStart(2, "0")) + ":" + bn(String(ss).padStart(2, "0"));
+  }
+  function renderTimer(){
+    timerText.textContent = fmt(remainSecs);
+    var frac = totalSecs ? remainSecs / totalSecs : 0;
+    prog.style.strokeDashoffset = String(CIRC * (1 - frac));
+  }
+  function setMode(mins, label, btn){
+    stopTimer();
+    currentMins = mins;
+    totalSecs = mins * 60; remainSecs = totalSecs;
+    timerMode.textContent = label;
+    renderTimer();
+    document.querySelectorAll(".mode-tabs button").forEach(function(b){ b.classList.remove("active"); });
+    if (btn) btn.classList.add("active");
+  }
+  function stopTimer(){
+    if (timerId) { clearInterval(timerId); timerId = null; }
+    running = false;
+    startBtn.textContent = "শুরু করো";
+  }
+  document.querySelectorAll(".mode-tabs button").forEach(function(b){
+    b.addEventListener("click", function(){
+      setMode(+b.getAttribute("data-mins"), b.getAttribute("data-label"), b);
+    });
+  });
+  startBtn.addEventListener("click", function(){
+    if (running) { stopTimer(); return; }
+    running = true;
+    startBtn.textContent = "থামাও";
+    timerId = setInterval(function(){
+      remainSecs--;
+      if (remainSecs <= 0) {
+        remainSecs = 0;
+        renderTimer();
+        stopTimer();
+        if (timerMode.textContent !== "ছোট বিরতি") {
+          sessionsDone++;
+          focusDoneMins += currentMins;
+        }
+        document.getElementById("timerStatus").textContent =
+          "সেশন শেষ! আজ সম্পন্ন সেশন: " + bn(sessionsDone) + "টি · মোট ফোকাস: " + bn(focusDoneMins) + " মিনিট";
+        timerMode.textContent = "সময় শেষ — বিরতি নাও";
+        try {
+          var ctx = new (window.AudioContext || window.webkitAudioContext)();
+          var o = ctx.createOscillator(), g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = 880; g.gain.value = 0.12;
+          o.start(); g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.9);
+          o.stop(ctx.currentTime + 0.95);
+        } catch (e) { /* audio unavailable — timer still works */ }
+        return;
+      }
+      renderTimer();
+    }, 1000);
+  });
+  document.getElementById("timerReset").addEventListener("click", function(){
+    stopTimer();
+    remainSecs = totalSecs;
+    renderTimer();
+  });
+  renderTimer();
+
+  /* ---------- word counter ---------- */
+  var wordText = document.getElementById("wordText");
+  function countWords(){
+    var t = wordText.value;
+    var trimmed = t.trim();
+    var words = trimmed ? trimmed.split(/\s+/).filter(Boolean).length : 0;
+    var chars = t.length;
+    var charsNo = t.replace(/\s/g, "").length;
+    var sents = trimmed ? (trimmed.match(/[।.!?]+/g) || []).length : 0;
+    if (trimmed && sents === 0) sents = 1;
+    var mins = words / 180;
+    document.getElementById("wcWords").textContent = bn(words);
+    document.getElementById("wcChars").textContent = bn(chars);
+    document.getElementById("wcCharsNo").textContent = bn(charsNo);
+    document.getElementById("wcSent").textContent = bn(sents);
+    document.getElementById("wcRead").textContent =
+      words === 0 ? "০ মিনিট" : (mins < 1 ? "১ মিনিটের কম" : bn(Math.ceil(mins)) + " মিনিট");
+  }
+  wordText.addEventListener("input", countWords);
+  countWords();
+})();
+</script>
+</body>
+</html>
